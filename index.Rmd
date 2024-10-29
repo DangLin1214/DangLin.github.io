@@ -1,0 +1,19 @@
+---
+title: "Home"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    includes:
+      in_header: title.html
+---
+
+<div style = "text-align: center; margin-top: 20px;">
+  <h1 style = "color: black;">Dang Lin</h1>
+</div>
+
+<image src = "./dang.jpg" style = "width:40%; float:left; margin-right:30px;">
+
+<p style = "text-align: justify; font-size: 18px; margin-top: 200px; max-width: 900px;">
+Welcome to my page! I am a first-year Biostatistics student at Columbia University with primary research interests in clinical trials, survival analysis, and risk modeling. I hold a B.S. in Statistics and Economics from the University of Toronto. Please feel free to contact me regarding potential collaborations.
+</p>
