@@ -1,0 +1,82 @@
+---
+title: "Flexdashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(p8105.datasets)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+```{r message = FALSE}
+# Load the data and convert data to the data frame
+data("ny_noaa")
+ny_noaa <- as.data.frame(ny_noaa)
+
+# Clean the dataset 
+ny_noaa_tidy <- ny_noaa %>%
+  mutate(
+    date = as.Date(date, format = "%Y-%m-%d"),
+    year = year(date),
+    month = month(date),
+    day = day(date), 
+    prcp = as.numeric(prcp) / 10, 
+    tmax = as.numeric(tmax) / 10, 
+    tmin = as.numeric(tmin) / 10)
+```
+
+### Chart A
+
+```{r message = FALSE, warning = FALSE}
+# Plot the scatter plot of average snow vs. snow depth by year and id
+ny_noaa_tidy %>% 
+  group_by(id, year) %>%
+  summarise(avg_snow = mean(snow, na.rm = TRUE),
+            avg_snwd = mean(snwd, na.rm = TRUE)) %>% 
+  slice(-1, -n()) %>%
+  mutate(text_label = paste("ID: ", id, "<br>Year: ", year, "<br>Avg Snow: ", 
+                             avg_snow, "<br>Avg Snow Depth: ", avg_snwd)) %>%
+  plot_ly(
+    x = ~avg_snow, y = ~avg_snwd, type = "scatter", mode = "markers",
+    color = ~avg_snwd, text = ~text_label, colors = "viridis", alpha = 0.5) %>% 
+   layout(title = "Average Snow vs. Snow Depth by Year and ID",
+         xaxis = list(title = "Average Snow"),
+         yaxis = list(title = "Average Snow Depth")) %>% 
+   colorbar(title = "Average Snow Depth")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r message = FALSE, warning = FALSE}
+# Plot the boxplot for minimum temperature by year
+ny_noaa_tidy %>% 
+  plot_ly(x = ~factor(year), y = ~tmin, type = "box", color = ~factor(year),
+          colors = "viridis") %>%
+  layout(title = "Boxplot of Minimum Temperature (tmin) by Year",
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Minimum Temperature (tmin)"))
+```
+
+
+### Chart C
+
+```{r message = FALSE, warning = FALSE}
+# Plot the bar chart for average maximum temperature by year
+ny_noaa_tidy %>%
+  group_by(year) %>%
+  summarise(avg_tmax = mean(tmax, na.rm = TRUE)) %>% 
+  plot_ly(x = ~factor(year), y = ~avg_tmax, type = "bar", color = ~factor(year),
+          colors = "viridis") %>%
+  layout(title = "Average Maximum Temperature (tmax) by Year",
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Average Maximum Temperature (tmax)"))
+```
