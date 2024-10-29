@@ -1,0 +1,18 @@
+name: "Dang Lin's Personal Website"
+output_dir: "."
+navbar:
+  title: "Dang Lin"
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "CV"
+      href: cv.html
+    - text: "Flexdashboard"
+      href: flexdashboard.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<dl3757@cumc.columbia.edu>
+    - icon: fa-github fa-lg
+      href: https://github.com/DangLin1214/DangLin.github.io.git
+output:
+  html_document: 
+    theme: flatly
